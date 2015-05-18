@@ -1,0 +1,189 @@
+{\rtf1\ansi\uc0 \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf12{\b from\b0 }} {\cf2{twisted}}{\cf11{.}}{\cf2{internet}}{\cf11{.}}{\cf2{protocol}} {\cf12{\b import\b0 }} {\cf2{Factory}}}\par\pard
+\cbpat1{{\cf12{\b from\b0 }} {\cf2{twisted}}{\cf11{.}}{\cf2{protocols}}{\cf11{.}}{\cf2{basic}} {\cf12{\b import\b0 }} {\cf2{LineReceiver}}}\par\pard
+\cbpat1{{\cf12{\b from\b0 }} {\cf2{twisted}}{\cf11{.}}{\cf2{internet}} {\cf12{\b import\b0 }} {\cf2{reactor}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf12{\b import\b0 }} {\cf2{logging}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{PORT}} {\cf11{=}} {\cf2{}}{\cf4{{6}{6}{6}{7}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf12{\b class\b0 }} {\cf2{}}{\cf15{PseudoIRC}}{\cf2{}}{\cf11{(}}{\cf2{LineReceiver}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{__init__}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{channels}}{\cf11{,}} {\cf2{nicks}}{\cf11{,}} {\cf2{protocols}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{channels}} {\cf11{=}} {\cf2{channels}\par\pard
+\cbpat1{        self}}{\cf11{.}}{\cf2{nicks}} {\cf11{=}} {\cf2{nicks}\par\pard
+\cbpat1{        self}}{\cf11{.}}{\cf2{protocols}} {\cf11{=}} {\cf2{protocols}\par\pard
+\cbpat1{        self}}{\cf11{.}}{\cf2{nick}} {\cf11{=}} {\cf2{}}{\cf12{\b None\b0 }}        {\cf2{}}{\cf5{\i # username\i0 }}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{channel}} {\cf11{=}} {\cf2{}}{\cf12{\b None\b0 }}     {\cf2{}}{\cf5{\i # current channel\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{connectionMade}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Got connection"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{connectionLost}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{reason}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{}}{\cf15{handle_QUIT}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{line}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendLine}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{'-- '}}{\cf2{}} {\cf11{+}} {\cf2{line}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{broadcastLine}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{line}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i # Send line to all users in current channels\i0 }}}\par\pard
+\cbpat1{{\cf2{        send_nicks}} {\cf11{=}} {\cf2{}}{\cf13{set}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b for\b0 }} {\cf2{nick}} {\cf12{\b in\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{channel}}{\cf11{]:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i # Don't send our message back to us\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b if\b0 }} {\cf2{nick}} {\cf11{!=}} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{                send_nicks}}{\cf11{.}}{\cf2{}}{\cf15{add}}{\cf2{}}{\cf11{(}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b for\b0 }} {\cf2{nick}} {\cf12{\b in\b0 }} {\cf2{send_nicks}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{protocols}}{\cf11{[}}{\cf2{nick}}{\cf11{].}}{\cf2{}}{\cf15{sendLine}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{'%s <%s> %s'}}{\cf2{}} {\cf11{% (}}}\par\pard
+\cbpat1{{\cf2{                                          self}}{\cf11{.}}{\cf2{channel}}{\cf11{,}} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{,}} {\cf2{line}}{\cf11{))}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{lineReceived}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{line}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if not\b0 }} {\cf2{line}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if\b0 }} {\cf2{line}}{\cf11{[}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{] !=}} {\cf2{}}{\cf3{"/"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i # Normal message - send to all users in current channel\i0 }}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{broadcastLine}}{\cf2{}}{\cf11{(}}{\cf2{line}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf5{\i # Otherwise it's a command\i0 }}}\par\pard
+\cbpat1{{\cf2{        line}} {\cf11{=}} {\cf2{line}}{\cf11{[}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{:]}}                 {\cf2{}}{\cf5{\i # strip /\i0 }}}\par\pard
+\cbpat1{{\cf2{        parts}} {\cf11{=}} {\cf2{line}}{\cf11{.}}{\cf2{}}{\cf15{split}}{\cf2{}}{\cf11{()}}            {\cf2{}}{\cf5{\i # syntax: <cmd> [argument]\i0 }}}\par\pard
+\cbpat1{{\cf2{        cmd}} {\cf11{=}} {\cf2{parts}}{\cf11{[}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{].}}{\cf2{}}{\cf15{lower}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf12{\b not in\b0 }} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"users"}}{\cf2{}}{\cf11{,}} {\cf2{}}{\cf3{"list"}}{\cf2{}}{\cf11{,}} {\cf2{}}{\cf3{"quit"}}{\cf2{}}{\cf11{,}}}\par\pard
+\cbpat1{{\cf2{}}                       {\cf3{"nick"}}{\cf2{}}{\cf11{,}} {\cf2{}}{\cf3{"join"}}{\cf2{}}{\cf11{,}} {\cf2{}}{\cf3{"chan"}}{\cf2{}}{\cf11{,}} {\cf2{}}{\cf3{"part"}}{\cf2{}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Bad command: %s"}}{\cf2{}} {\cf11{%}} {\cf2{cmd}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf11{==}} {\cf2{}}{\cf3{"users"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{handle_USERS}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf11{==}} {\cf2{}}{\cf3{"list"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{handle_LIST}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf11{==}} {\cf2{}}{\cf3{"quit"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i # Nick/channel handling logic not here, since\i0 }}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i # we want to do same if TCP connection dies\i0 }}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{transport}}{\cf11{.}}{\cf2{}}{\cf15{loseConnection}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{            logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"User %s quit"}}{\cf2{}} {\cf11{%}} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf5{\i # All other commands need arg\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if\b0 }} {\cf2{}}{\cf13{len}}{\cf2{}}{\cf11{(}}{\cf2{parts}}{\cf11{) ==}} {\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Command /%s needs argument"}}{\cf2{}} {\cf11{%}} {\cf2{cmd}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{        arg}} {\cf11{=}} {\cf2{parts}}{\cf11{[}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{]}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf11{==}} {\cf2{}}{\cf3{"nick"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{handle_NICK}}{\cf2{}}{\cf11{(}}{\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf11{==}} {\cf2{}}{\cf3{"join"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{handle_JOIN}}{\cf2{}}{\cf11{(}}{\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf11{==}} {\cf2{}}{\cf3{"chan"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{handle_CHAN}}{\cf2{}}{\cf11{(}}{\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{        {\cf12{\b if\b0 }} {\cf2{cmd}} {\cf11{==}} {\cf2{}}{\cf3{"part"}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{handle_PART}}{\cf2{}}{\cf11{(}}{\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{handle_LIST}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Channels:"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b for\b0 }} {\cf2{chan}} {\cf12{\b in\b0 }} {\cf2{}}{\cf13{sorted}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{.}}{\cf2{}}{\cf15{keys}}{\cf2{}}{\cf11{()):}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{chan}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"End of channel list"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{handle_USERS}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Users:"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b for\b0 }} {\cf2{nick}} {\cf12{\b in\b0 }} {\cf2{}}{\cf13{sorted}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{.}}{\cf2{nicks}}{\cf11{.}}{\cf2{}}{\cf15{keys}}{\cf2{}}{\cf11{()):}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"End of users list"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{handle_QUIT}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{nick}} {\cf12{\b is None\b0 }}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Lost connection"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{        logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"User %s quit"}}{\cf2{}} {\cf11{%}} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b del\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{nicks}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{]}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i # If user was last in channel, remove channel\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b for\b0 }} {\cf2{chan}} {\cf12{\b in\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{.}}{\cf2{}}{\cf15{keys}}{\cf2{}}{\cf11{():}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b if\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{chan}}{\cf11{] ==}} {\cf2{}}{\cf13{set}}{\cf2{}}{\cf11{([}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{]):}}}\par\pard
+\cbpat1{{\cf2{}}                {\cf12{\b del\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{chan}}{\cf11{]}}}\par\pard
+\cbpat1{{\cf2{                logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Removed channel %s, user %s last"}}{\cf2{}} {\cf11{% (}}}\par\pard
+\cbpat1{{\cf2{                             chan}}{\cf11{,}} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{))}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{handle_NICK}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{arg}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if\b0 }} {\cf2{arg}} {\cf12{\b in\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{nicks}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Nick '%s' already in use"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{nick}} {\cf11{=}} {\cf2{arg}\par\pard
+\cbpat1{        self}}{\cf11{.}}{\cf2{nicks}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{] =}} {\cf2{}}{\cf13{set}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{protocols}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{] =}} {\cf2{self}\par\pard
+\cbpat1{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Set nick: %s"}}{\cf2{}} {\cf11{%}} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"User set nick '%s'"}}{\cf2{}} {\cf11{%}} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{handle_JOIN}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{arg}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if not\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendLine}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"You must set a nick first (/nick)"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if\b0 }} {\cf2{arg}} {\cf12{\b not in\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf5{\i # Create channel if it doesn't exist\i0 }}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{arg}}{\cf11{] =}} {\cf2{}}{\cf13{set}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{            logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Created channel %s"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{arg}}{\cf11{].}}{\cf2{}}{\cf15{add}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{nicks}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{].}}{\cf2{}}{\cf15{add}}{\cf2{}}{\cf11{(}}{\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{channel}} {\cf11{=}} {\cf2{arg}\par\pard
+\cbpat1{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Joined %s"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"User %s joined %s"}}{\cf2{}} {\cf11{% (}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{,}} {\cf2{arg}}{\cf11{))}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{handle_CHAN}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{arg}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i # Set current channel for user\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if not\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendLine}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"You must set a nick first (/nick)"}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if\b0 }} {\cf2{arg}} {\cf12{\b not in\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{nicks}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{]:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"You aren't joined to channel %s"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{channel}} {\cf11{=}} {\cf2{arg}\par\pard
+\cbpat1{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Set channel to %s"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"User %s set channel %s"}}{\cf2{}} {\cf11{% (}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{,}} {\cf2{arg}}{\cf11{))}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{handle_PART}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{arg}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if\b0 }} {\cf2{arg}} {\cf12{\b not in\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{nicks}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{]:}}}\par\pard
+\cbpat1{{\cf2{            self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"You aren't joined to channel %s"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b return\b0 }}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{nicks}}{\cf11{[}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{].}}{\cf2{}}{\cf15{remove}}{\cf2{}}{\cf11{(}}{\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{arg}}{\cf11{].}}{\cf2{}}{\cf15{remove}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{}}{\cf15{sendResponse}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Left %s"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{        logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"User %s left %s"}}{\cf2{}} {\cf11{% (}}{\cf2{self}}{\cf11{.}}{\cf2{nick}}{\cf11{,}} {\cf2{arg}}{\cf11{))}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf5{\i # If was last user, remove channel\i0 }}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b if not\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{arg}}{\cf11{]:}}}\par\pard
+\cbpat1{{\cf2{}}            {\cf12{\b del\b0 }} {\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{[}}{\cf2{arg}}{\cf11{]}}}\par\pard
+\cbpat1{{\cf2{            logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Removed channel %s"}}{\cf2{}} {\cf11{%}} {\cf2{arg}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf12{\b class\b0 }} {\cf2{}}{\cf15{PseudoIRCFactory}}{\cf2{}}{\cf11{(}}{\cf2{Factory}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{__init__}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{channels}} {\cf11{= \{\}}}      {\cf2{}}{\cf5{\i # dict, channel => set of nicks\i0 }}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{nicks}} {\cf11{= \{\}}}         {\cf2{}}{\cf5{\i # dict, nick => set of channels\i0 }}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{protocols}} {\cf11{= \{\}}}     {\cf2{}}{\cf5{\i # dict, nick => protocol\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{buildProtocol}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{addr}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b return\b0 }} {\cf2{}}{\cf15{PseudoIRC}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{.}}{\cf2{channels}}{\cf11{,}} {\cf2{self}}{\cf11{.}}{\cf2{nicks}}{\cf11{,}} {\cf2{self}}{\cf11{.}}{\cf2{protocols}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{logging}}{\cf11{.}}{\cf2{}}{\cf15{basicConfig}}{\cf2{}}{\cf11{(}}{\cf2{format}}{\cf11{=}}{\cf2{}}{\cf3{'%(levelname)s: %(message)s'}}{\cf2{}}{\cf11{,}} {\cf2{level}}{\cf11{=}}{\cf2{logging}}{\cf11{.}}{\cf2{INFO}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}\par\pard
+\cbpat1{reactor}}{\cf11{.}}{\cf2{}}{\cf15{listenTCP}}{\cf2{}}{\cf11{(}}{\cf2{PORT}}{\cf11{,}} {\cf2{}}{\cf15{PseudoIRCFactory}}{\cf2{}}{\cf11{())}}}\par\pard
+\cbpat1{{\cf2{logging}}{\cf11{.}}{\cf2{}}{\cf15{info}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Server listening on port %d"}}{\cf2{}} {\cf11{%}} {\cf2{PORT}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}\par\pard
+\cbpat1{reactor}}{\cf11{.}}{\cf2{}}{\cf15{run}}{\cf2{}}{\cf11{()}}{\cf2{}}}\par\pard
+\cbpat1{}}

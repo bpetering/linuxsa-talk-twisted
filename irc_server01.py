@@ -8,6 +8,7 @@ PORT = 6667
 
 
 class PseudoIRC(LineReceiver):
+    pass
 
     def __init__(self):
         pass
@@ -23,6 +24,7 @@ class PseudoIRC(LineReceiver):
 
 
 class PseudoIRCFactory(Factory):
+    pass
 
     def __init__(self):
         self.channels = {}

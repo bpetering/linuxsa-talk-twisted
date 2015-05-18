@@ -20,18 +20,7 @@ class PseudoIRC(LineReceiver):
         logging.info("Got connection")
 
     def connectionLost(self, reason):
-        # This does what handle_QUIT() would
-        if self.nick is None:
-            logging.info("Lost connection")
-            return
-        logging.info("User %s quit" % self.nick)
-        del self.nicks[self.nick]
-        # If user was last in channel, remove channel
-        for chan in self.channels.keys():
-            if self.channels[chan] == set([self.nick]):
-                del self.channels[chan]
-                logging.info("Removed channel %s, user %s last" % (
-                             chan, self.nick))
+        self.handle_QUIT()
 
     def sendResponse(self, line):
         self.sendLine('-- ' + line)
@@ -115,6 +104,18 @@ class PseudoIRC(LineReceiver):
             self.sendResponse(nick)
         self.sendResponse("End of users list")
 
+    def handle_QUIT(self):
+        if self.nick is None:
+            logging.info("Lost connection")
+            return
+        logging.info("User %s quit" % self.nick)
+        del self.nicks[self.nick]
+        # If user was last in channel, remove channel
+        for chan in self.channels.keys():
+            if self.channels[chan] == set([self.nick]):
+                del self.channels[chan]
+                logging.info("Removed channel %s, user %s last" % (
+                             chan, self.nick))
 
     def handle_NICK(self, arg):
         if arg in self.nicks:
