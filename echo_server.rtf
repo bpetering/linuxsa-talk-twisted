@@ -1,0 +1,17 @@
+{\rtf1\ansi\uc0 \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red224\green234\blue238;\red00\green00\blue00;\red191\green03\blue03;\red176\green126\blue00;\red131\green129\blue131;\red131\green129\blue131;\red255\green00\blue255;\red00\green130\blue00;\red129\green129\blue00;\red85\green85\blue85;\red00\green00\blue00;\red00\green00\blue00;\red00\green87\blue174;\red00\green00\blue00;\red01\green01\blue129;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf5{\i # From Twisted docs\i0 }}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf12{\b from\b0 }} {\cf2{twisted}}{\cf11{.}}{\cf2{internet}} {\cf12{\b import\b0 }} {\cf2{protocol}}{\cf11{,}} {\cf2{reactor}}{\cf11{,}} {\cf2{endpoints}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf12{\b class\b0 }} {\cf2{}}{\cf15{Echo}}{\cf2{}}{\cf11{(}}{\cf2{protocol}}{\cf11{.}}{\cf2{Protocol}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{dataReceived}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{data}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{        self}}{\cf11{.}}{\cf2{transport}}{\cf11{.}}{\cf2{}}{\cf15{write}}{\cf2{}}{\cf11{(}}{\cf2{data}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf12{\b class\b0 }} {\cf2{}}{\cf15{EchoFactory}}{\cf2{}}{\cf11{(}}{\cf2{protocol}}{\cf11{.}}{\cf2{Factory}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf12{\b def\b0 }} {\cf2{}}{\cf15{buildProtocol}}{\cf2{}}{\cf11{(}}{\cf2{self}}{\cf11{,}} {\cf2{addr}}{\cf11{):}}}\par\pard
+\cbpat1{{\cf2{}}        {\cf12{\b return\b0 }} {\cf2{}}{\cf15{Echo}}{\cf2{}}{\cf11{()}}}\par\pard
+\cbpat1{{\cf2{}\par\pard
+\cbpat1{endpoints}}{\cf11{.}}{\cf2{}}{\cf15{serverFromString}}{\cf2{}}{\cf11{(}}{\cf2{reactor}}{\cf11{,}} {\cf2{}}{\cf3{"tcp:{1}{2}{3}{4}"}}{\cf2{}}{\cf11{).}}{\cf2{}}{\cf15{listen}}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf15{EchoFactory}}{\cf2{}}{\cf11{())}}}\par\pard
+\cbpat1{{\cf2{reactor}}{\cf11{.}}{\cf2{}}{\cf15{run}}{\cf2{}}{\cf11{()}}{\cf2{}}}\par\pard
+\cbpat1{}}
